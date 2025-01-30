@@ -49,3 +49,6 @@ Using the **Flyweight Design Pattern**, we:
 2. **Assign Balls to Players**:  
    - Players get dodge balls through the factory, ensuring no duplicate balls are created.  
 
+
+![Local Image](FLYWEIGHT.png)
+
