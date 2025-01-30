@@ -7,6 +7,18 @@ using namespace std;
 // THE a AND b both have same function but gives different quality of houses.
 // the HOUSE company is the bridge here.
 
+// Important Points:
+// The main idea of the Bridge pattern is to decouple the abstraction (what a house does) from the implementation (how it's built), so they can vary independently.
+
+// House is the abstraction.
+// HouseCompany is the implementation.
+// The NewHouse class bridges the abstraction and the implementation by holding a pointer to a HouseCompany object.
+
+// Instead of creating subclasses for every combination of house types and quality levels, you use composition by injecting a HouseCompany into the House object.
+
+// House is Using HousingCompany as a Builder.
+
+
 class HouseCompany
 {
 public:
@@ -79,6 +91,9 @@ public:
 int main()
 {
     HouseCompany *aHouse = new AHouse();
+    // the main reason why it's a bridge and structural design pattern is that we are using the HouseCompany as a builder for the House.
+    // and the HouseCompany can add different houses, to structure it but the House will just use HouseCompany as pointer to make the house.
+    // the below line is how we create the bridge.
     House *newHouse = new NewHouse(aHouse);
 
     newHouse->constructHouse();

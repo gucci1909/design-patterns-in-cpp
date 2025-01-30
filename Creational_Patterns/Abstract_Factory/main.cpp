@@ -5,7 +5,7 @@ using namespace std;
 // we use the abstract factory pattern to create a family of related objects, in this case, we have two families of objects: wooden and steel.
 // We are building the house so we use same type of things like door and window , but the material is different.
 // that's where abstract factory pattern comes in.
-// we can make wooden adn steel house with the same code.
+// we can make wooden and steel house with the same code.
 
 class Door
 {
@@ -92,6 +92,7 @@ public:
 
 int main()
 {
+    // here we are just making the houses from the factory, we can use any factory to make the house.
     HouseFactory *woodenHouseFactory = new WoodenHouseFactory();
     Door *woodenDoor = woodenHouseFactory->createDoor();
     Window *woodenWindow = woodenHouseFactory->createWindow();
@@ -109,6 +110,14 @@ int main()
     cout << "Steel House:" << endl;
     steelDoor->create();
     steelWindow->create();
+
+    delete woodenDoor;
+    delete woodenWindow;
+    delete woodenHouseFactory;
+
+    delete steelDoor;
+    delete steelWindow;
+    delete steelHouseFactory;
 
     return 0;
 }
