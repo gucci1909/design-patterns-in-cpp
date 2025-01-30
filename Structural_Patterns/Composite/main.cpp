@@ -3,6 +3,9 @@
 #include <string>
 using namespace std;
 
+// In a city, there can be multiple colonies or independent houses only and  also each colony can have multiple houses.
+// The city is a composite of colonies and colonies are a composite of houses.
+
 class HouseComponent
 {
 public:
