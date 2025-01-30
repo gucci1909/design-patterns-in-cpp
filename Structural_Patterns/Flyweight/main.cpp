@@ -3,6 +3,12 @@
 #include <string>
 using namespace std;
 
+// here I have created a DodgeBall game, and every ball have same properties color and image.
+// so we can use the flyweight pattern here.
+// instead of making every time a new ball, we can use the same ball if it is already created.
+// I am using a map and checking if the ball is already created or not.
+// in the ball Factory, where we are taking the ball color and image, is the basic factory pattern, so here you can see flyweight always implemented with factory pattern.
+
 class Ball
 {
 public:
@@ -22,26 +28,20 @@ public:
     {
         cout << "Dodge Ball - Color: " << color << ", Image: " << image << endl;
     }
-
-    string getColor() { return color; }
-    string getImage() { return image; }
 };
 
-// The Flyweight Factory ensures that we don't create duplicate balls with the same color and image.
 class BallFactory
 {
 private:
-    unordered_map<string, DodgeBall *> ballMap; // A map to store shared balls
+    unordered_map<string, DodgeBall *> ballMap;
 
 public:
-    // Method to get or create a ball based on its color and image
     DodgeBall *getBall(string color, string image)
     {
         string key = color + "-" + image;
 
         if (ballMap.find(key) == ballMap.end())
         {
-            // If ball doesn't exist, create a new one and store it
             ballMap[key] = new DodgeBall(color, image);
             cout << "Creating a new ball with color: " << color << " and image: " << image << endl;
         }
@@ -53,7 +53,7 @@ public:
 class Player
 {
 private:
-    DodgeBall *ball; // Each player has a unique ball with properties like size
+    DodgeBall *ball;
 
 public:
     void setBall(DodgeBall *b)
@@ -61,9 +61,9 @@ public:
         ball = b;
     }
 
-    void showBallDetails()
+    void showBallDetails(string name)
     {
-        cout << "Player's Ball: ";
+        cout << name << endl;
         ball->display();
     }
 };
@@ -72,23 +72,27 @@ int main()
 {
     BallFactory ballFactory;
 
-    // Clients (players) requesting dodge balls with the same color and image
-    DodgeBall *redBall = ballFactory.getBall("Red", "BallImage1");
-    DodgeBall *blueBall = ballFactory.getBall("Blue", "BallImage2");
-    DodgeBall *anotherRedBall = ballFactory.getBall("Red", "BallImage1"); // Reuse the same red ball
+    DodgeBall *Ball_1 = ballFactory.getBall("Red", "BallImage1");
 
-    // Creating players
-    Player player1;
-    player1.setBall(redBall);
-    player1.showBallDetails();
+    Player amit;
+    amit.setBall(Ball_1);
+    amit.showBallDetails("amit");
 
-    Player player2;
-    player2.setBall(blueBall);
-    player2.showBallDetails();
+    cout << endl;
 
-    Player player3;
-    player3.setBall(anotherRedBall); // This will reuse the red ball from the factory
-    player3.showBallDetails();
+    DodgeBall *Ball_2 = ballFactory.getBall("Blue", "BallImage2");
+
+    Player suresh;
+    suresh.setBall(Ball_2);
+    suresh.showBallDetails("suresh");
+
+    DodgeBall *ResUse_Ball_1 = ballFactory.getBall("Red", "BallImage1");
+
+    cout << endl;
+
+    Player harry;
+    harry.setBall(ResUse_Ball_1);
+    harry.showBallDetails("harry");
 
     return 0;
 }
