@@ -3,93 +3,92 @@
 #include <string>
 using namespace std;
 
-class HousePart
+class Ball
 {
 public:
-    virtual void showDetails() = 0;
+    virtual void display() = 0;
 };
 
-class Wall : public HousePart
-{
-public:
-    void showDetails() override
-    {
-        cout << "Wall: A solid structure that encloses the house." << endl;
-    }
-};
-
-class Door : public HousePart
-{
-public:
-    void showDetails() override
-    {
-        cout << "Door: Allows access to the house." << endl;
-    }
-};
-
-class Window : public HousePart
-{
-public:
-    void showDetails() override
-    {
-        cout << "Window: Provides light and ventilation." << endl;
-    }
-};
-
-class HousePartFactory
+class DodgeBall : public Ball
 {
 private:
-    unordered_map<string, HousePart *> houseParts;
+    string color;
+    string image;
 
 public:
-    HousePart *getHousePart(string partType)
+    DodgeBall(string c, string i) : color(c), image(i) {}
+
+    void display() override
     {
-        if (houseParts.find(partType) == houseParts.end())
+        cout << "Dodge Ball - Color: " << color << ", Image: " << image << endl;
+    }
+
+    string getColor() { return color; }
+    string getImage() { return image; }
+};
+
+// The Flyweight Factory ensures that we don't create duplicate balls with the same color and image.
+class BallFactory
+{
+private:
+    unordered_map<string, DodgeBall *> ballMap; // A map to store shared balls
+
+public:
+    // Method to get or create a ball based on its color and image
+    DodgeBall *getBall(string color, string image)
+    {
+        string key = color + "-" + image;
+
+        if (ballMap.find(key) == ballMap.end())
         {
-            if (partType == "Wall")
-                houseParts[partType] = new Wall();
-            else if (partType == "Door")
-                houseParts[partType] = new Door();
-            else if (partType == "Window")
-                houseParts[partType] = new Window();
-            else
-                cout << "Unknown house part!" << endl;
+            // If ball doesn't exist, create a new one and store it
+            ballMap[key] = new DodgeBall(color, image);
+            cout << "Creating a new ball with color: " << color << " and image: " << image << endl;
         }
 
-        return houseParts[partType];
+        return ballMap[key];
     }
 };
 
-class House
+class Player
 {
 private:
-    HousePartFactory partFactory;
-    string houseType;
+    DodgeBall *ball; // Each player has a unique ball with properties like size
 
 public:
-    House(string type) : houseType(type) {}
-
-    void buildHouse()
+    void setBall(DodgeBall *b)
     {
-        cout << "Building a " << houseType << " house..." << endl;
+        ball = b;
+    }
 
-        HousePart *wall = partFactory.getHousePart("Wall");
-        HousePart *door = partFactory.getHousePart("Door");
-        HousePart *window = partFactory.getHousePart("Window");
-
-        wall->showDetails();
-        door->showDetails();
-        window->showDetails();
+    void showBallDetails()
+    {
+        cout << "Player's Ball: ";
+        ball->display();
     }
 };
 
 int main()
 {
-    House house1("Modern");
-    House house2("Traditional");
+    BallFactory ballFactory;
 
-    house1.buildHouse();
-    house2.buildHouse();
+    // Clients (players) requesting dodge balls with the same color and image
+    DodgeBall *redBall = ballFactory.getBall("Red", "BallImage1");
+    DodgeBall *blueBall = ballFactory.getBall("Blue", "BallImage2");
+    DodgeBall *anotherRedBall = ballFactory.getBall("Red", "BallImage1"); // Reuse the same red ball
+
+    // Creating players
+    Player player1;
+    player1.setBall(redBall);
+    player1.showBallDetails();
+
+    Player player2;
+    player2.setBall(blueBall);
+    player2.showBallDetails();
+
+    Player player3;
+    player3.setBall(anotherRedBall); // This will reuse the red ball from the factory
+    player3.showBallDetails();
 
     return 0;
 }

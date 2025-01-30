@@ -81,9 +81,9 @@ int main()
     first.buildRooms();
     first.buildDoors();
 
-    House *woodenHouse = first.getHouse();
+    House *firstHouse = first.getHouse();
     cout << "First House:" << endl;
-    woodenHouse->mainHouse();
+    firstHouse->mainHouse();
 
     cout << endl;
 
