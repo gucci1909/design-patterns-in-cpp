@@ -30,5 +30,3 @@ In this example, we are using a **Fan** with different states: **Off**, **Low**,
 
 - **Simplifies State Transitions:** The state pattern makes it easier to manage complex state transitions. You don't need to write complicated logic for each state change.
 - **Encapsulation:** Each state has its own class and is responsible for its behavior. This helps in organizing the code better.
-- **Flexibility:** It’s easy to add new states or modify existing ones without affecting other parts of the system.
-- **Clearer Code:** The behavior of the object is defined in separate classes, making the code more understandable and maintainable.
